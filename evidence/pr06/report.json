@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR06",
+  "commit": "7803c83f6b1aa7ee9c51485a9972c8470cd68735",
+  "course_kit": {
+    "version": "v1-w12",
+    "archive_sha256": "525e86f818ffed166e7f7b67cc87fdd3f3ea840d13aa90e76bde9fda0f3c9c5a"
+  },
+  "commands": ["replace-with-executed-command"],
+  "tests": [{"name": "replace-with-test-name", "status": "passed"}],
+  "defect": {
+    "reproducer": "Изменение parent у lidar_joint на camera_link в Xacro-файле.",
+    "root_cause": "Неверная топология дерева tf: лидар оказался в системе координат камеры, а не базы робота.",
+    "proof_after": "Возврат parent на base_link. Команда tf2_echo base_link lidar_link снова показывает корректное смещение [0.0, 0.0, 0.3]."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": "replace-with-number",
+    "self_study_hours": "replace-with-number"
+  },
+  "ai_used": true
+}

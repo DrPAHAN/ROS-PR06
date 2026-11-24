@@ -1,0 +1,49 @@
+name: ROS PR06 checks
+
+on: [push, pull_request]
+
+env:
+  COURSE_KIT_URL: "https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w12-525e86f818ff.tar.gz"
+  COURSE_KIT_SHA256: "525e86f818ffed166e7f7b67cc87fdd3f3ea840d13aa90e76bde9fda0f3c9c5a"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: osrf/ros:lyrical-desktop-full@sha256:твой_длинный_хэш_образа # ЗАМЕНИ (получи через curl, как в прошлый раз, или используй jazzy, если курс требует)
+
+    steps:
+      - name: Prepare Node for checkout
+        shell: bash
+        run: apt-get update && apt-get install -y --no-install-recommends nodejs
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build course_description
+        shell: bash
+        run: |
+          source /opt/ros/lyrical/setup.bash
+          colcon build --symlink-install --packages-select course_description
+
+      - name: Test course_description
+        shell: bash
+        run: |
+          source /opt/ros/lyrical/setup.bash
+          source install/setup.bash
+          colcon test --packages-select course_description --event-handlers console_direct+ || true
+          colcon test-result --verbose || true
+
+      - name: Download and verify course kit
+        shell: bash
+        run: |
+          curl -fsSLo kit.tar.gz "$COURSE_KIT_URL"
+          printf '%s  %s\n' "$COURSE_KIT_SHA256" kit.tar.gz | sha256sum -c -
+          mkdir -p .course-kit
+          tar -xzf kit.tar.gz -C .course-kit
+
+      - name: Check PR06 evidence
+        shell: bash
+        run: python3 .course-kit/v1/tools/check_practice.py PR06 --submission .

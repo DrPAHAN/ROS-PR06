@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: osrf/ros:lyrical-desktop-full@sha256:твой_длинный_хэш_образа # ЗАМЕНИ (получи через curl, как в прошлый раз, или используй jazzy, если курс требует)
+      image: osrf/ros:lyrical-desktop-full@sha256:525e86f818ffed166e7f7b67cc87fdd3f3ea840d13aa90e76bde9fda0f3c9c5a
 
     steps:
       - name: Prepare Node for checkout

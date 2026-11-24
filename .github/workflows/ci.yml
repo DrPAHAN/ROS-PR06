@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: osrf/ros:lyrical-desktop-full@sha256:525e86f818ffed166e7f7b67cc87fdd3f3ea840d13aa90e76bde9fda0f3c9c5a
+         image: osrf/ros:jazzy-desktop-full@sha256:d16957210572c5f919f3f9bd2fb0cc24a82542647489d8b8eda7c3beda31305f
 
     steps:
       - name: Prepare Node for checkout
@@ -25,13 +25,13 @@ jobs:
       - name: Build course_description
         shell: bash
         run: |
-          source /opt/ros/lyrical/setup.bash
+          source /opt/ros/jazzy/setup.bash
           colcon build --symlink-install --packages-select course_description
 
       - name: Test course_description
         shell: bash
         run: |
-          source /opt/ros/lyrical/setup.bash
+          source /opt/ros/jazzy/setup.bash
           source install/setup.bash
           colcon test --packages-select course_description --event-handlers console_direct+ || true
           colcon test-result --verbose || true
